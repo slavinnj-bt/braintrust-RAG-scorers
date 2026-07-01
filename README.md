@@ -48,9 +48,10 @@ bt functions push \
   `bt-deepeval-*` scorer from the project's scorer library, and run.
 - **From code:** `python run_eval.py` scores a built-in sample dataset and creates
   an experiment you can open in Braintrust.
-- **Playground dataset:** each folder has a standalone `rag_dataset.py` — run
-  `python <folder>/rag_dataset.py` to upload a sample RAG dataset to Braintrust so
-  you can select it in the Playground (independent of the scorers).
+- **Playground dataset:** each folder ships a standalone `rag_dataset.jsonl`
+  (JSON‑lines: `input` / `expected` / `metadata` / `tags`). Upload it independently
+  of the scorers — `bt datasets create "<Name>" --file <folder>/rag_dataset.jsonl -p "<Project>"`
+  (or `python <folder>/rag_dataset.py`) — then select it in the Playground.
 
 ## Metrics at a glance
 
