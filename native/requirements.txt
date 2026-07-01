@@ -1,0 +1,5 @@
+# Runtime deps for the DeepEval-style Braintrust scorers when pushed via
+# `bt functions push ... --requirements requirements.txt`.
+# The LLM scorers call an OpenAI-compatible endpoint (the Braintrust AI proxy).
+openai>=1.40.0
+pydantic>=2.0.0
