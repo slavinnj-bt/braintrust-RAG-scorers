@@ -25,6 +25,9 @@ bt functions push \
 
 # Try them on a sample dataset (creates an experiment)
 python run_eval.py
+
+# Or upload the sample dataset so you can pick it in the Playground:
+python rag_dataset.py     # creates/updates the "DeepEval RAG demo dataset"
 ```
 
 Then open a Playground or experiment in Braintrust and add any `bt-native-*`

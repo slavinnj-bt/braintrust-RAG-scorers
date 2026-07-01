@@ -30,45 +30,16 @@ from contextual_relevancy import deepeval_contextual_relevancy
 from exact_match import deepeval_exact_match
 from faithfulness import deepeval_faithfulness
 from g_eval_correctness import deepeval_geval_correctness
+from rag_dataset import RAG_ROWS
 
 ORG_NAME = os.environ.get("BRAINTRUST_ORG_NAME", "My Org")
 PROJECT_NAME = os.environ.get("BRAINTRUST_DEFAULT_PROJECT", "RAG-Scorers-Demo")
 EXPERIMENT_NAME = "DeepEval lib scorers demo"
 
-# A small RAG dataset: faithful, hallucinated, and noisy-retrieval cases so every
-# metric shows a real spread. `output` is a pre-baked answer (the task just echoes
-# it) — swap in your own generator/prompt as needed.
-ROWS = [
-    {
-        "input": "What is the capital of France?",
-        "output": "The capital of France is Paris.",
-        "expected": "Paris",
-        "retrieval_context": ["Paris is the capital and most populous city of France."],
-    },
-    {
-        "input": "How tall is Mount Everest?",
-        "output": "Mount Everest is about 9,500 meters tall.",
-        "expected": "About 8,849 meters (29,032 ft).",
-        "retrieval_context": ["Mount Everest's peak is 8,849 metres (29,032 ft) above sea level."],
-    },
-    {
-        "input": "What gas do plants absorb during photosynthesis?",
-        "output": "Plants absorb carbon dioxide.",
-        "expected": "Carbon dioxide",
-        "retrieval_context": [
-            "Photosynthesis converts carbon dioxide and water into glucose and oxygen.",
-            "The stock market closed higher on Tuesday.",
-        ],
-    },
-    {
-        "input": "Who wrote Romeo and Juliet?",
-        "output": "Romeo and Juliet was written by William Shakespeare.",
-        "expected": "William Shakespeare",
-        "retrieval_context": ["Romeo and Juliet is a tragedy written by William Shakespeare."],
-    },
-]
-
-_OUTPUT_BY_INPUT = {r["input"]: r["output"] for r in ROWS}
+# The dataset lives in rag_dataset.py (RAG_ROWS) so it can be uploaded to Braintrust
+# independently for the Playground:  python rag_dataset.py
+# Here the task just echoes each row's pre-baked `output` so every metric scores.
+_OUTPUT_BY_INPUT = {r["input"]: r["output"] for r in RAG_ROWS}
 
 
 def task(input):
@@ -99,12 +70,8 @@ def GEvalCorrectness(input, output, expected, **_):
 
 def data():
     return [
-        {
-            "input": r["input"],
-            "expected": r["expected"],
-            "metadata": {"retrieval_context": r["retrieval_context"]},
-        }
-        for r in ROWS
+        {"input": r["input"], "expected": r["expected"], "metadata": r["metadata"]}
+        for r in RAG_ROWS
     ]
 
 
